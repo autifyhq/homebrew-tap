@@ -5,8 +5,8 @@
 class AutifyCli < Formula
   desc "Autify Command-Line Interface (CLI)"
   homepage "https://github.com/autifyhq/autify-cli"
-  url "https://github.com/autifyhq/autify-cli", using: :git, revision: "59be425"
-  version "0.62.0"
+  url "https://github.com/autifyhq/autify-cli", using: :git, revision: "7eedc9a"
+  version "0.63.0"
   # sha256 ""
   license "MIT"
 
