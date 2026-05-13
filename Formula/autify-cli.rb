@@ -5,8 +5,8 @@
 class AutifyCli < Formula
   desc "Autify Command-Line Interface (CLI)"
   homepage "https://github.com/autifyhq/autify-cli"
-  url "https://github.com/autifyhq/autify-cli", using: :git, revision: "062fad6"
-  version "0.72.0"
+  url "https://github.com/autifyhq/autify-cli", using: :git, revision: "281d5e5"
+  version "0.73.0"
   # sha256 ""
   license "MIT"
 
@@ -24,8 +24,14 @@ class AutifyCli < Formula
   private
 
   def taball_url
-    package = JSON.parse(File.read("./package.json"), symbolize_names: true)
-    raise "Version mismatch: #{package[:version]}" if package[:version] != version
+    package = JSON.parse(File.read("./autify-cli/package.json"), symbolize_names: true)
+    # In PR builds the workflow injects a SHA suffix into the formula's version
+    # without committing it to package.json, so allow the mismatch when an
+    # explicit env var marks the build as a PR test. Homebrew strips custom
+    # env vars unless they're prefixed with HOMEBREW_.
+    if package[:version] != version && !ENV["HOMEBREW_AUTIFY_CLI_PR_BUILD"]
+      raise "Version mismatch: #{package[:version]}"
+    end
 
     bucket = package.dig(:oclif, :update, :s3, :bucket)
     folder = package.dig(:oclif, :update, :s3, :folder)
